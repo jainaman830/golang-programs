@@ -4,6 +4,7 @@ import "fmt"
 
 func rotateRight(arr []int, count int) []int {
 	length := len(arr)
+	count = count % length
 	for c := 0; c < count; c++ {
 		last := arr[length-1]
 		for i := length - 1; i > 0; i-- {
@@ -17,6 +18,7 @@ func rotateRight(arr []int, count int) []int {
 
 func rotateLeft(arr []int, count int) []int {
 	length := len(arr)
+	count = count % length
 	for c := 0; c < count; c++ {
 		first := arr[0]
 		for i := 0; i < length-1; i++ {
@@ -28,6 +30,6 @@ func rotateLeft(arr []int, count int) []int {
 }
 func main() {
 	arr := []int{1, 2, 3, 4, 5, 6, 7, 8}
-	fmt.Println(rotateRight(arr, 7))
-	fmt.Println(rotateLeft(arr, 7))
+	fmt.Println(rotateRight(arr, 9))
+	fmt.Println(rotateLeft(arr, 9))
 }
