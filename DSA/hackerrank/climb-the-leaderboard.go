@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
-	// "slices"
 )
 
 /*
@@ -21,10 +21,11 @@ import (
 
 func climbingLeaderboard(ranked []int32, player []int32) []int32 {
 	// Write your code here
-	// slices.Sort(ranked)
+	slices.Sort(ranked)
 	var currrank, max, min int32
 	rankMap := make(map[int32]int32)
-	for i := 0; i < len(ranked); i++ {
+	min = ranked[0]
+	for i := len(ranked) - 1; i >= 0; i-- {
 		if ranked[i] > max {
 			max = ranked[i]
 		}
@@ -36,6 +37,7 @@ func climbingLeaderboard(ranked []int32, player []int32) []int32 {
 			rankMap[ranked[i]] = currrank
 		}
 	}
+	fmt.Println(currrank, max, min)
 	var arr []int32
 	for _, num := range player {
 		if rank, ok := rankMap[num]; ok {
@@ -45,29 +47,39 @@ func climbingLeaderboard(ranked []int32, player []int32) []int32 {
 			if num > max {
 				lastRank = 1
 			} else if num < min {
-				lastRank = int32(len(ranked) + 1)
+				lastRank = currrank + 1
 			} else {
-				for key, val := range rankMap {
-					if num < key {
-						if lastRank < val {
-							lastRank = val
-						}
-					}
-				}
-				if lastRank == 0 {
-					lastRank = 1
+				key := getElem(ranked, num)
+				keyRank := rankMap[key]
+				fmt.Println(num, key, keyRank)
+				if key > num {
+					lastRank = keyRank + 1
 				} else {
-					lastRank++
+					lastRank = keyRank
 				}
 			}
-
 			arr = append(arr, lastRank)
 			rankMap[num] = lastRank
 		}
 	}
 	return arr
 }
+func getElem(a []int32, search int32) (result int32) {
+	fmt.Println(a)
+	mid := len(a) / 2
+	switch {
+	case len(a) == 1:
+		result = a[0] // not found
+		return
+	case a[mid] > search:
+		result = getElem(a[:mid], search)
+	case a[mid] < search:
+		result = getElem(a[mid+1:], search)
 
+	}
+
+	return
+}
 func main() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
