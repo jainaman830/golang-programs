@@ -2,17 +2,14 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
-func printOdd(limit int, oddCh, evenCh chan int, done chan bool) {
-	for {
-		num, ok := <-oddCh
-		if !ok {
-			return
-		}
+func printOdd(limit int, oddCh, evenCh chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for num := range oddCh {
 		if num > limit {
 			close(evenCh)
-			done <- true
 			return
 		}
 		fmt.Println(num)
@@ -20,15 +17,11 @@ func printOdd(limit int, oddCh, evenCh chan int, done chan bool) {
 	}
 }
 
-func printEven(limit int, evenCh, oddCh chan int, done chan bool) {
-	for {
-		num, ok := <-evenCh
-		if !ok {
-			return
-		}
+func printEven(limit int, evenCh, oddCh chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for num := range evenCh {
 		if num > limit {
 			close(oddCh)
-			done <- true
 			return
 		}
 		fmt.Println(num)
@@ -43,15 +36,13 @@ func main() {
 
 	oddCh := make(chan int)
 	evenCh := make(chan int)
-	done := make(chan bool, 2)
+	var wg sync.WaitGroup
+	wg.Add(2)
 
-	go printOdd(n, oddCh, evenCh, done)
-	go printEven(n, evenCh, oddCh, done)
+	go printOdd(n, oddCh, evenCh, &wg)
+	go printEven(n, evenCh, oddCh, &wg)
 
-	// Start with the first odd number
-	oddCh <- 1
+	oddCh <- 1 // Start with odd
 
-	// Wait for both goroutines to finish
-	<-done
-	<-done
+	wg.Wait() // Wait for both goroutines to finish
 }
