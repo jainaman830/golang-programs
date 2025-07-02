@@ -3,6 +3,8 @@
 
 package main
 
+import "fmt"
+
 func BinarySearch(arr []int, val int) int {
 	left, right := 0, len(arr)-1
 	for left <= right {
@@ -18,5 +20,7 @@ func BinarySearch(arr []int, val int) int {
 	return -1 // Value not found
 }
 func main() {
-
+	sorted := []int{3, 7, 8, 19, 25, 42}
+	target := 25
+	fmt.Printf("Index of %d: %d\n\n", target, BinarySearch(sorted, target))
 }
