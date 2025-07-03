@@ -1,3 +1,5 @@
+// Concept: Divide and conquer—splits the array, sorts each half, and merges them.
+// Time Complexity : O(nlogn)
 package main
 
 import "fmt"
