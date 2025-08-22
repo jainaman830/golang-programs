@@ -1,3 +1,5 @@
+// Concept: Repeatedly swaps adjacent elements if they are in the wrong order.
+// Time Complexity : O(n2)
 package main
 
 import "fmt"

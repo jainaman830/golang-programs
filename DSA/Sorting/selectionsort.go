@@ -1,3 +1,9 @@
+/*
+Selection Sort is a simple comparison-based sorting algorithm. It works by repeatedly selecting the smallest (or largest) element from the unsorted portion and moving it to the beginning.
+- In-place: No extra memory needed
+- Not stable: May change the order of equal elements
+- Time Complexity: O(n²) for all cases
+*/
 package main
 
 import "fmt"

@@ -1,3 +1,5 @@
+// Concept: Builds the sorted array one item at a time, like sorting playing cards.
+// Time Complexity : O(n2)
 package main
 
 import "fmt"
